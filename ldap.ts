@@ -27,7 +27,7 @@ export const run = async (username:string, password:string) => new Promise((reso
         
     });
 });
-
+ 
 const welcome = ({ cn, email }:welcomeText) => {
     console.log(`Welcome, ${cn}!`);
     console.log(`Your e-mail address is "${email}" according to the LDAP server.`);
