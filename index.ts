@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import LdapAuth from 'ldapauth-fork';
 import { employeeSchema } from "./models/user";
+import { getTemplates } from './controllers/template';
 dotenv.config();
 
 const mongoose = require('mongoose');
@@ -58,6 +59,14 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/test', (req: Request, res: Response) => {
     res.send(`Hi from test page`);   
 });
+
+app.get('/templates', (req,res)=>{
+    connectMongoose()
+    .then(()=>{res.send('database ready, attempting fetch');
+    getTemplates;}
+);
+    mongoose.connection.close()
+})
 
 app.post('/testpost', (req, res ) => {
 res.header('Content-Type', 'application/json'); 
