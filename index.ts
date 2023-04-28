@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import LdapAuth from 'ldapauth-fork';
 import { employeeSchema } from "./models/user";
-import { getTemplates } from './controllers/template';
+import { getTemplates, addTemplate } from './controllers/template';
 dotenv.config();
 
 const mongoose = require('mongoose');
@@ -22,11 +22,6 @@ const client = new LdapAuth(options);
 
 const app: Express = express();
 const apiRouter = express.Router();
-
-type welcomeText = {
-    cn:string,
-    email: string
-}
 
 //env variables
 /* 
@@ -60,13 +55,23 @@ app.get('/test', (req: Request, res: Response) => {
     res.send(`Hi from test page`);   
 });
 
-app.get('/templates', (req,res)=>{
+app.get('/template', (req,res)=>{
+    connectMongoose()
+    .then(()=>console.log('database ready, attempting fetch'))
+    .then(()=> (getTemplates))
+.then((result)=>(res.send(result)))
+    mongoose.connection.close()
+})
+
+app.post('/template', (req,res)=>{
     connectMongoose()
     .then(()=>{res.send('database ready, attempting fetch');
-    getTemplates;}
+    addTemplate(req.body);}
 );
     mongoose.connection.close()
 })
+
+
 
 app.post('/testpost', (req, res ) => {
 res.header('Content-Type', 'application/json'); 
@@ -81,7 +86,7 @@ try {
             .end('access denied');
         }
         console.log(user);
-        res.send(`post request received with params:${req.body.userName}, returning ${user.cn}`)
+        res.send(`${user.ou}`)
         })
     }  catch{
         res.send('error encountered, access denied')

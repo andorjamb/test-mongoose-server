@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { templateSchema } from '../models/template';
 
-export const Template = mongoose.model<ITemplates>('Template', templateSchema);
+export const Template = mongoose.model<ITemplate>('Template', templateSchema);
 
 export interface IQCategory {
     _id: String,
@@ -149,7 +149,7 @@ export interface IQCategory {
   
   // roles interface ends ..
   
-  export interface ITemplates {
+  export interface ITemplate {
     _id: String;
     templateTitle: String;
     instructions:String,
