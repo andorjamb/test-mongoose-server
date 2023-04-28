@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { Template} from "../interfaces/interfaces";
-import { ITemplates } from "../interfaces/interfaces";
+import { Template, ITemplate } from "../interfaces/interfaces";
+
 
 export const getTemplates = async (req: Request, res: Response) => {
   try {
-    const templates: ITemplates[] = await Template.find({})
+    const templates: ITemplate[] = await Template.find({})
     .populate({
       path: "categories",
       populate: {
@@ -20,4 +20,15 @@ export const getTemplates = async (req: Request, res: Response) => {
     res.status(500).json("server responded with an error");
   }
 };
+
+export const addTemplate = async(body:ITemplate)=>{
+  console.log(body) //debugging
+  const newTemplate = new Template(body);
+  try {
+    await newTemplate.save()
+    .then(result => console.log('doc saved'))
+  } catch (err) {
+    console.log(err)
+  }
+}
 
